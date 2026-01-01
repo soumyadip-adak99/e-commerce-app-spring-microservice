@@ -225,6 +225,3 @@ docker-compose up --build
 **Soumyadip Adak**
 🌐 Website: [https://soumyadip-adak.pages.dev](https://soumyadip-adak.pages.dev)
 
----
-
-⭐ If you find this project useful, don’t forget to **star** the repository!
