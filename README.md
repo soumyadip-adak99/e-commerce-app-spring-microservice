@@ -140,14 +140,14 @@ This ensures:
 ## 🛠️ Tech Stack
 
 | Layer            | Technology              |
-| ---------------- | ----------------------- |
+| ---------------- |-------------------------|
 | Backend          | Spring Boot, Spring MVC |
 | Cloud            | Spring Cloud            |
 | Gateway          | Spring Cloud Gateway    |
 | Discovery        | Eureka Server           |
 | Config           | Spring Cloud Config     |
 | Messaging        | Apache Kafka            |
-| Database         | MongoDB                 |
+| Database         | MongoDB  , Postgresql   |
 | Tracing          | Zipkin                  |
 | Containerization | Docker                  |
 
