@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: customer-service
+  mongodb:
+    username: soumya
+    password: tiger
+    host: localhost
+    port: 27017
+    database: customer
+    authentication-database: admin
+
+
+server:
+  port: 8090
