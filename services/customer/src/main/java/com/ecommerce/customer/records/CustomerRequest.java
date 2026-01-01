@@ -1,4 +1,4 @@
-package com.ecommerce.customer.dto;
+package com.ecommerce.customer.records;
 
 import com.ecommerce.customer.entity.Address;
 import jakarta.validation.constraints.Email;

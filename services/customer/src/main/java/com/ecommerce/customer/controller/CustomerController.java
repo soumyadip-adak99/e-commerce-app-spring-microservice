@@ -1,7 +1,7 @@
 package com.ecommerce.customer.controller;
 
-import com.ecommerce.customer.dto.CustomerRequest;
-import com.ecommerce.customer.dto.CustomerResponse;
+import com.ecommerce.customer.records.CustomerRequest;
+import com.ecommerce.customer.records.CustomerResponse;
 import com.ecommerce.customer.services.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,4 +33,22 @@ public class CustomerController {
     public ResponseEntity<List<CustomerResponse>> findAllCustomers() {
         return ResponseEntity.ok(customerService.getAllCustomers());
     }
+
+    @GetMapping("/exits/{customer-id}")
+    public ResponseEntity<Boolean> existsById(@PathVariable("customer-id") String id) {
+        return ResponseEntity.ok(customerService.exitsUser(id));
+    }
+
+    @GetMapping("/{customer-id}")
+    public ResponseEntity<CustomerResponse> getCustomerById(@PathVariable("customer-id") String id) {
+        return ResponseEntity.ok(customerService.findCustomerById(id));
+    }
+
+    @DeleteMapping("/delete/{customer-id}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable("customer-id") String id) {
+        customerService.deleteCustomer(id);
+        return ResponseEntity.accepted().build();
+    }
+
 }
+

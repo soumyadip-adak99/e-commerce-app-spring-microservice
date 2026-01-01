@@ -1,8 +1,7 @@
 package com.ecommerce.customer.services.implementation;
 
-import ch.qos.logback.core.util.StringUtil;
-import com.ecommerce.customer.dto.CustomerRequest;
-import com.ecommerce.customer.dto.CustomerResponse;
+import com.ecommerce.customer.records.CustomerRequest;
+import com.ecommerce.customer.records.CustomerResponse;
 import com.ecommerce.customer.entity.Customer;
 import com.ecommerce.customer.exception.CustomerNotFoundException;
 import com.ecommerce.customer.mapper.CustomerMapper;
@@ -42,6 +41,26 @@ public class CustomerServiceImpl implements CustomerService {
                 .stream()
                 .map(mapper::fromCustomer)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean exitsUser(String id) {
+        return repository.findById(id).isPresent();
+    }
+
+    @Override
+    public CustomerResponse findCustomerById(String id) {
+        return repository.findById(id)
+                .map(mapper::fromCustomer)
+                .orElseThrow(() -> new CustomerNotFoundException(String.format("No customer found with this provided id %s", id)));
+    }
+
+    @Override
+    public void deleteCustomer(String id) {
+        if(!exitsUser(id)) {
+            throw new RuntimeException("User not found");
+        }
+        repository.deleteById(id);
     }
 
     private void mergeCustomer(Customer customer, CustomerRequest request) {
