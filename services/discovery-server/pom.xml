@@ -11,7 +11,7 @@
     <groupId>com.ecommerce</groupId>
     <artifactId>discovery</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>discovery</name>
+    <name>discovery-server</name>
     <description>discovery</description>
     <url/>
     <licenses>

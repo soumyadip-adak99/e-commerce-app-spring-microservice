@@ -2,11 +2,10 @@ package com.ecommerce.customer.services;
 
 import com.ecommerce.customer.records.CustomerRequest;
 import com.ecommerce.customer.records.CustomerResponse;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
 public interface CustomerService {
 
     String createCustomer(CustomerRequest request);

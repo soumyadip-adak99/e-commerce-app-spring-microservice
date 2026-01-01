@@ -9,10 +9,12 @@ import com.ecommerce.customer.repository.CustomerRepository;
 import com.ecommerce.customer.services.CustomerService;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
@@ -57,7 +59,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteCustomer(String id) {
-        if(!exitsUser(id)) {
+        if (!exitsUser(id)) {
             throw new RuntimeException("User not found");
         }
         repository.deleteById(id);
