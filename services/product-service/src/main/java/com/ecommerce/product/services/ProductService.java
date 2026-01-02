@@ -13,7 +13,7 @@ public interface ProductService {
 
     List<ProductPurchaseResponse> purchaseProduct(List<ProductPurchaseRequest> requests);
 
-    ProductResponse getProductById(String id);
+    ProductResponse getProductById(Integer id);
 
     List<ProductResponse> getAllProducts();
 }
