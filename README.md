@@ -23,7 +23,7 @@ The architecture follows **industry best practices** such as:
 
 ### 🔹 High‑Level Architecture Diagram
 
-![System Architecture](https://res.cloudinary.com/dzunlgq2p/image/upload/v1767247606/ChatGPT_Image_Jan_1_2026_11_35_46_AM_crgzrd.png)
+![System Architecture](https://res.cloudinary.com/dzunlgq2p/image/upload/v1767355690/Untitled-2025-12-23-1303.excalidraw_mepon0.png)
 
 **Key Highlights:**
 
