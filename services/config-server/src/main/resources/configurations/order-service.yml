@@ -12,6 +12,13 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: orderConfirmation:com.ecommerce.order.records.OrderConfirmation
 
 server:
   servlet:
@@ -22,4 +29,4 @@ application:
   config:
     customer-url: http://localhost:8090/api/v1/customer
     product-url: http://localhost:8050/api/v1/product
-    payment-url: http://localhsot:8070/api/v1/payment
+    payment-url: http://localhost:8070/api/v1/payment
