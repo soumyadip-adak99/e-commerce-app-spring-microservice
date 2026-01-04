@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmation</title>
+</head>
+
+<body style="margin:0; padding:0; background-color:#f5f6f8; font-family:Arial, Helvetica, sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f5f6f8; padding:20px;">
+    <tr>
+        <td align="center">
+
+            <!-- Email Container -->
+            <table width="600" cellpadding="0" cellspacing="0"
+                   style="background-color:#ffffff; border-radius:6px; padding:20px;">
+
+                <!-- Header -->
+                <tr>
+                    <td style="text-align:center; padding-bottom:20px;">
+                        <h2 style="margin:0; color:#333333;">
+                            Order Confirmed ✅
+                        </h2>
+                    </td>
+                </tr>
+
+                <!-- Greeting -->
+                <tr>
+                    <td style="color:#555555; font-size:14px; padding-bottom:15px;">
+                        Hello
+                        <strong th:text="${customerName}">Customer</strong>,
+                    </td>
+                </tr>
+
+                <!-- Message -->
+                <tr>
+                    <td style="color:#555555; font-size:14px; padding-bottom:20px;">
+                        Thank you for your order! Your payment has been successfully processed.
+                        Below are your order details:
+                    </td>
+                </tr>
+
+                <!-- Order Info -->
+                <tr>
+                    <td style="padding-bottom:20px;">
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="font-size:13px; color:#777777;">
+                                    <strong>Order Reference:</strong>
+                                </td>
+                                <td style="font-size:13px; color:#333333;">
+                                    <span th:text="${orderReference}">ORD-123</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-size:13px; color:#777777; padding-top:5px;">
+                                    <strong>Total Amount:</strong>
+                                </td>
+                                <td style="font-size:13px; color:#333333; padding-top:5px;">
+                                    ₹ <span th:text="${totalAmount}">0.00</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Product Table -->
+                <tr>
+                    <td>
+                        <table width="100%" cellpadding="8" cellspacing="0"
+                               style="border-collapse:collapse; font-size:13px;">
+                            <tr style="background-color:#f0f0f0;">
+                                <th align="left" style="border:1px solid #dddddd;">Product</th>
+                                <th align="center" style="border:1px solid #dddddd;">Quantity</th>
+                                <th align="right" style="border:1px solid #dddddd;">Price</th>
+                            </tr>
+
+                            <tr th:each="product : ${Products}">
+                                <td style="border:1px solid #dddddd;"
+                                    th:text="${product.name}">
+                                    Product Name
+                                </td>
+                                <td align="center" style="border:1px solid #dddddd;"
+                                    th:text="${product.quantity}">
+                                    1
+                                </td>
+                                <td align="right" style="border:1px solid #dddddd;">
+                                    ₹ <span th:text="${product.price}">0.00</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="padding-top:25px; font-size:12px; color:#999999; text-align:center;">
+                        If you have any questions, feel free to contact us.<br/>
+                        <strong>Thank you for shopping with us!</strong>
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
