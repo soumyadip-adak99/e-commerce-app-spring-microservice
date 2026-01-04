@@ -1,6 +1,7 @@
 package com.ecommerce.order.services.implementation;
 
 import com.ecommerce.order.client.CustomerClient;
+import com.ecommerce.order.client.PaymentClient;
 import com.ecommerce.order.client.ProductClient;
 import com.ecommerce.order.exception.BusinessException;
 import com.ecommerce.order.mapper.OrderMapper;
@@ -25,6 +26,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
     private final OrderLineServiceImpl orderLineServiceImpl;
     private final OrderProducer orderProducer;
+    private final PaymentClient paymentClient;
 
     @Override
     public Integer createOrder(OrderRequest request) {
@@ -49,7 +51,16 @@ public class OrderServiceImpl implements OrderService {
             );
         }
 
-        //TODO: start payment process
+        // start payment process
+        var paymentRequest = new PaymentRequest(
+                request.amount(),
+                request.paymentMethod(),
+                order.getId(),
+                order.getReference(),
+                customer
+        );
+
+        paymentClient.requestOrderPayment(paymentRequest);
 
         //send the order confirmation -> notification-microservice (kafka)
         orderProducer.sendOrderConfirmation(

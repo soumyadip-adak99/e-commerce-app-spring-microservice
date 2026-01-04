@@ -1,16 +1,14 @@
-package com.ecommerce.payment.records;
+package com.ecommerce.order.records;
 
-
-import com.ecommerce.payment.enums.PaymentMethod;
+import com.ecommerce.order.enums.PaymentMethod;
 
 import java.math.BigDecimal;
 
 public record PaymentRequest(
-        Integer id,
         BigDecimal amount,
         PaymentMethod paymentMethod,
         Integer orderId,
         String orderReference,
-        Customer customer
+        CustomerResponse customer
 ) {
 }
