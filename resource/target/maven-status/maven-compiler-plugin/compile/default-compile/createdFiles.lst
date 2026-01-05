@@ -1,0 +1,2 @@
+com\ecommerce\common\envts\PaymentNotificationEvent.class
+com\ecommerce\common\envts\OrderConfirmationEvent.class

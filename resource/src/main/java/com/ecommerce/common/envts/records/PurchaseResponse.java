@@ -1,4 +1,4 @@
-package com.ecommerce.order.records;
+package com.ecommerce.common.envts.records;
 
 import java.math.BigDecimal;
 
