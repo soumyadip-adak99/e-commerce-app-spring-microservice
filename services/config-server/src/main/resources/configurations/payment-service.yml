@@ -4,19 +4,22 @@ spring:
     username: soumya
     password: tiger
     driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
+
   kafka:
     producer:
       bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
-        spring.json.type.mapping: paymentConfirmation:com.ecommerce.payment.records.PaymentNotificationRequest
+        spring.json.trusted.packages: "*"
+        spring.json.type.mapping: paymentConfirmation:com.ecommerce.common.event.PaymentNotificationRequestEvent
 
 server:
   servlet:

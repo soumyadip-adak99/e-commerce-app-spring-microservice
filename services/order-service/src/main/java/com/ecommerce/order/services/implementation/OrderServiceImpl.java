@@ -1,5 +1,6 @@
 package com.ecommerce.order.services.implementation;
 
+import com.ecommerce.common.events.OrderConfirmationEvent;
 import com.ecommerce.order.client.CustomerClient;
 import com.ecommerce.order.client.PaymentClient;
 import com.ecommerce.order.client.ProductClient;
@@ -64,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
 
         //send the order confirmation -> notification-microservice (kafka)
         orderProducer.sendOrderConfirmation(
-                new OrderConfirmation(
+                new OrderConfirmationEvent(
                         request.reference(),
                         request.amount(),
                         request.paymentMethod(),

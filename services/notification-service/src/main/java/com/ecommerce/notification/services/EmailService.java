@@ -1,6 +1,6 @@
 package com.ecommerce.notification.services;
 
-import com.ecommerce.notification.records.Product;
+import com.ecommerce.common.events.records.PurchaseResponse;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -76,7 +76,7 @@ public class EmailService {
             String customerName,
             BigDecimal amount,
             String orderReference,
-            List<Product> products
+            List<PurchaseResponse> products
     ) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();

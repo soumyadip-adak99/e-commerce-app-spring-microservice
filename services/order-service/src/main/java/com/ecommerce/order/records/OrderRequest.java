@@ -1,6 +1,6 @@
 package com.ecommerce.order.records;
 
-import com.ecommerce.order.enums.PaymentMethod;
+import com.ecommerce.common.events.enums.PaymentMethod;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

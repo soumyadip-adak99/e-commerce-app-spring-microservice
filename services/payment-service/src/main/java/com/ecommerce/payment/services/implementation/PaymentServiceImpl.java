@@ -1,8 +1,8 @@
 package com.ecommerce.payment.services.implementation;
 
+import com.ecommerce.common.events.PaymentNotificationRequestEvent;
 import com.ecommerce.payment.mapper.PaymentMapper;
 import com.ecommerce.payment.producer.NotificationProducer;
-import com.ecommerce.payment.records.PaymentNotificationRequest;
 import com.ecommerce.payment.records.PaymentRequest;
 import com.ecommerce.payment.repository.PaymentRepository;
 import com.ecommerce.payment.services.PaymentService;
@@ -22,7 +22,7 @@ public class PaymentServiceImpl implements PaymentService {
         var payment = paymentRepository.save(paymentMapper.toPayment(request));
 
         notificationProducer.sendingNotification(
-                new PaymentNotificationRequest(
+                new PaymentNotificationRequestEvent(
                         request.orderReference(),
                         request.amount(),
                         request.paymentMethod(),

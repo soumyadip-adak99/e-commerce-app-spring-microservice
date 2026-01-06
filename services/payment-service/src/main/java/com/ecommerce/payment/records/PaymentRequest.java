@@ -1,7 +1,7 @@
 package com.ecommerce.payment.records;
 
 
-import com.ecommerce.payment.enums.PaymentMethod;
+import com.ecommerce.common.events.enums.PaymentMethod;
 
 import java.math.BigDecimal;
 

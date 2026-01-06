@@ -18,8 +18,8 @@ spring:
         # use * for local development or unsecure networks
         spring.json.trusted.packages: "*"
         spring.json.type.mapping: |
-          orderConfirmation:com.ecommerce.payment.records.PaymentNotificationRequest,
-          paymentConfirmation:com.ecommerce.payment.records.PaymentNotificationRequest
+          orderConfirmation:com.ecommerce.common.events.OrderConfirmationEvent,
+          paymentConfirmation:com.ecommerce.common.events.PaymentNotificationRequestEvent
 
   mail:
     host: localhost

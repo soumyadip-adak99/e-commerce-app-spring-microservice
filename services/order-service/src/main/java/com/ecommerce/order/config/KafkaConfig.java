@@ -1,6 +1,6 @@
 package com.ecommerce.order.config;
 
-import com.ecommerce.order.records.OrderConfirmation;
+import com.ecommerce.common.events.OrderConfirmationEvent;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -26,7 +26,7 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ProducerFactory<String, OrderConfirmation> producerFactory() {
+    public ProducerFactory<String, OrderConfirmationEvent> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -36,7 +36,7 @@ public class KafkaConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, OrderConfirmation> kafkaTemplate() {
+    public KafkaTemplate<String, OrderConfirmationEvent> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }

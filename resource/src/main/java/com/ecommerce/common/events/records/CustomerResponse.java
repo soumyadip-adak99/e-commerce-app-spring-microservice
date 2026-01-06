@@ -1,4 +1,4 @@
-package com.ecommerce.order.records;
+package com.ecommerce.common.events.records;
 
 public record CustomerResponse(
         String id,

@@ -81,6 +81,13 @@
 			<groupId>jakarta.validation</groupId>
 			<artifactId>jakarta.validation-api</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.ecommerce</groupId>
+			<artifactId>ecommerce-common</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

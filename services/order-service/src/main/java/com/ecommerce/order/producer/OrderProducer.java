@@ -1,6 +1,6 @@
 package com.ecommerce.order.producer;
 
-import com.ecommerce.order.records.OrderConfirmation;
+import com.ecommerce.common.events.OrderConfirmationEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class OrderProducer {
 
-    private final KafkaTemplate<String, OrderConfirmation> kafkaTemplate;
+    private final KafkaTemplate<String, OrderConfirmationEvent> kafkaTemplate;
 
-    public void sendOrderConfirmation(OrderConfirmation orderConfirmation) {
+    public void sendOrderConfirmation(OrderConfirmationEvent orderConfirmation) {
         log.info("Sending order confirmation");
-        Message<OrderConfirmation> message = MessageBuilder
+        Message<OrderConfirmationEvent> message = MessageBuilder
                 .withPayload(orderConfirmation)
                 .setHeader(KafkaHeaders.TOPIC, "order-topic")
                 .build();

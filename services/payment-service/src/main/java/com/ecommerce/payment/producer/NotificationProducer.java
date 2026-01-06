@@ -1,6 +1,6 @@
 package com.ecommerce.payment.producer;
 
-import com.ecommerce.payment.records.PaymentNotificationRequest;
+import com.ecommerce.common.events.PaymentNotificationRequestEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class NotificationProducer {
 
-    private final KafkaTemplate<String, PaymentNotificationRequest> kafkaTemplate;
+    private final KafkaTemplate<String, PaymentNotificationRequestEvent> kafkaTemplate;
 
-    public void sendingNotification(PaymentNotificationRequest request) {
+    public void sendingNotification(PaymentNotificationRequestEvent request) {
         log.info("Sending notification with body <{}>", request);
 
-        Message<PaymentNotificationRequest> message = MessageBuilder
+        Message<PaymentNotificationRequestEvent> message = MessageBuilder
                 .withPayload(request)
                 .setHeader(KafkaHeaders.TOPIC, "payment-topic")
                 .build();

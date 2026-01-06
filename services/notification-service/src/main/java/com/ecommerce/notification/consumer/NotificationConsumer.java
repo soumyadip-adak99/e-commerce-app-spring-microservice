@@ -1,8 +1,8 @@
 package com.ecommerce.notification.consumer;
 
+import com.ecommerce.common.events.OrderConfirmationEvent;
 import com.ecommerce.notification.entity.Notification;
 import com.ecommerce.notification.enums.NotificationType;
-import com.ecommerce.notification.records.OrderConfirmation;
 import com.ecommerce.notification.records.PaymentConfirmation;
 import com.ecommerce.notification.repository.NotificationRepository;
 import com.ecommerce.notification.services.EmailService;
@@ -44,7 +44,7 @@ public class NotificationConsumer {
     }
 
     @KafkaListener(topics = "order-topic")
-    public void consumeOrderConfirmationNotification(OrderConfirmation orderConfirmation) {
+    public void consumeOrderConfirmationNotification(OrderConfirmationEvent orderConfirmation) {
         log.info("Consuming the message from order topic TOPIC:: {}", orderConfirmation);
 
         notificationRepository.save(

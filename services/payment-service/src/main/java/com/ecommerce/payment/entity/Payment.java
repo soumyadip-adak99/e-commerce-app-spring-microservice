@@ -1,6 +1,7 @@
 package com.ecommerce.payment.entity;
 
-import com.ecommerce.payment.enums.PaymentMethod;
+
+import com.ecommerce.common.events.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

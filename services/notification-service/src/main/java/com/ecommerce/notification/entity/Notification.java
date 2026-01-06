@@ -1,7 +1,7 @@
 package com.ecommerce.notification.entity;
 
+import com.ecommerce.common.events.OrderConfirmationEvent;
 import com.ecommerce.notification.enums.NotificationType;
-import com.ecommerce.notification.records.OrderConfirmation;
 import com.ecommerce.notification.records.PaymentConfirmation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +26,7 @@ public class Notification {
 
     private LocalDateTime notificationDate;
 
-    private OrderConfirmation orderConfirmation;
+    private OrderConfirmationEvent orderConfirmation;
 
     private PaymentConfirmation paymentConfirmation;
 }

@@ -1,6 +1,6 @@
-package com.ecommerce.common.envts;
+package com.ecommerce.common.events;
 
-import com.ecommerce.common.envts.enums.PaymentMethod;
+import com.ecommerce.common.events.enums.PaymentMethod;
 
 import java.math.BigDecimal;
 
@@ -8,8 +8,8 @@ public record PaymentNotificationRequestEvent(
         String orderReference,
         BigDecimal amount,
         PaymentMethod paymentMethod,
-        String customerFirstName,
-        String customerLastName,
+        String customerFirstname,
+        String customerLastname,
         String customerEmail
 ) {
 }

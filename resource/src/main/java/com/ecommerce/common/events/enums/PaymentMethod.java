@@ -1,4 +1,4 @@
-package com.ecommerce.common.envts.enums;
+package com.ecommerce.common.events.enums;
 
 public enum PaymentMethod {
 

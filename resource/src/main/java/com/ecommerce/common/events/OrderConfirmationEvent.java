@@ -1,8 +1,8 @@
-package com.ecommerce.common.envts;
+package com.ecommerce.common.events;
 
-import com.ecommerce.common.envts.enums.PaymentMethod;
-import com.ecommerce.common.envts.records.CustomerResponse;
-import com.ecommerce.common.envts.records.PurchaseResponse;
+import com.ecommerce.common.events.enums.PaymentMethod;
+import com.ecommerce.common.events.records.CustomerResponse;
+import com.ecommerce.common.events.records.PurchaseResponse;
 
 import java.math.BigDecimal;
 import java.util.List;
