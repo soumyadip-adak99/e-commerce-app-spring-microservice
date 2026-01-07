@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ecommerce</groupId>
-	<artifactId>api-getway-service</artifactId>
+	<artifactId>ap-gateway-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>api-getway-service</name>
 	<description>Demo project for Spring Boot</description>

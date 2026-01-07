@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: PRODUCT-SERVICE
   datasource:
     url: jdbc:postgresql://localhost:5432/product
     username: soumya
@@ -19,6 +21,5 @@ spring:
     password: ${spring.datasource.password}
 
 server:
-  servlet:
-    context-path: /api/v1
   port: 8050
+

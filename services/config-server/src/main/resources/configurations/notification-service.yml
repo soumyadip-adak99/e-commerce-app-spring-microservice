@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: NOTIFICATION-SERVICE
   mongodb:
     username: soumya
     password: tiger
@@ -42,5 +44,3 @@ application:
 
 server:
   port: 8066
-  servlet:
-    context-path: /api/v1
