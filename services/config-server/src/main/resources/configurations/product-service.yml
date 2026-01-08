@@ -20,6 +20,10 @@ spring:
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
 
+eureka:
+  instance:
+    prefer-ip-address: true
+
 server:
   port: 8050
 
