@@ -32,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Integer createOrder(OrderRequest request) {
         // check the customer
-        var customer = this.customerClient.findCustomerById(String.valueOf(request.id()))
+        var customer = this.customerClient.findCustomerById(String.valueOf(request.customerId()))
                 .orElseThrow(() -> new BusinessException(String.format("Can't create order:: No customer exits with the provided id:: %s", request.id())));
 
         // purchases the products -> product microservice (RestTemplate)

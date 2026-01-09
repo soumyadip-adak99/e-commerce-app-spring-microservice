@@ -21,7 +21,7 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         spring.json.trusted.packages: "*"
-        spring.json.type.mapping: paymentConfirmation:com.ecommerce.common.event.PaymentNotificationRequestEvent
+        spring.json.type.mapping: paymentConfirmation:com.ecommerce.common.events.PaymentNotificationRequestEvent
 
 eureka:
   instance:
