@@ -42,5 +42,9 @@ spring:
 application:
   sender-email: ${SENDER_MAIL}
 
+eureka:
+  instance:
+    prefer-ip-address: true
+
 server:
   port: 8066

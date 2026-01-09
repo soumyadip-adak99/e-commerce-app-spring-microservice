@@ -20,11 +20,15 @@ spring:
       properties:
         spring.json.type.mapping: orderConfirmation:com.ecommerce.common.events.OrderConfirmationEvent
 
+eureka:
+  instance:
+    prefer-ip-address: true
+
 server:
   port: 8060
 
 application:
   config:
-    customer-url: http://localhost:8090/customer
-    product-url: http://localhost:8050/product
-    payment-url: http://localhost:8070/payment
+    customer-url: http://localhost:8090/api/v1/customer
+    product-url: http://localhost:8050/api/v1/product
+    payment-url: http://localhost:8020/api/v1/payment

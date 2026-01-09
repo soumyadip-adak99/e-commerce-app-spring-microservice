@@ -9,6 +9,9 @@ spring:
     database: customer
     authentication-database: admin
 
+eureka:
+  instance:
+    prefer-ip-address: true
 
 server:
   port: 8090
