@@ -3,9 +3,9 @@ package com.ecommerce.common.events.records;
 public record CustomerResponse(
         String id,
 
-        String firstName,
+        String firstname,
 
-        String lastName,
+        String lastname,
 
         String email
 ) {

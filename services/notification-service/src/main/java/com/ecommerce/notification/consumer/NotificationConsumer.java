@@ -1,9 +1,9 @@
 package com.ecommerce.notification.consumer;
 
 import com.ecommerce.common.events.OrderConfirmationEvent;
+import com.ecommerce.common.events.PaymentNotificationRequestEvent;
 import com.ecommerce.notification.entity.Notification;
 import com.ecommerce.notification.enums.NotificationType;
-import com.ecommerce.notification.records.PaymentConfirmation;
 import com.ecommerce.notification.repository.NotificationRepository;
 import com.ecommerce.notification.services.EmailService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class NotificationConsumer {
     private final EmailService emailService;
 
     @KafkaListener(topics = "payment-topic")
-    public void consumePaymentSuccessNotification(PaymentConfirmation paymentConfirmation) {
+    public void consumePaymentSuccessNotification(PaymentNotificationRequestEvent paymentConfirmation) {
         log.info("Consuming the message from payment topic TOPIC:: {}", paymentConfirmation);
 
         notificationRepository.save(
@@ -34,7 +34,7 @@ public class NotificationConsumer {
         );
 
         // send email
-        String customerName = paymentConfirmation.customerFirstName() + " " + paymentConfirmation.customerLastName();
+        String customerName = paymentConfirmation.customerFirstname() + " " + paymentConfirmation.customerLastname();
         emailService.sendPaymentSuccessEmail(
                 paymentConfirmation.customerEmail(),
                 customerName,
@@ -56,7 +56,7 @@ public class NotificationConsumer {
         );
 
         // send email
-        String customerName = orderConfirmation.customer().firstName() + " " + orderConfirmation.customer().lastName();
+        String customerName = orderConfirmation.customer().firstname() + " " + orderConfirmation.customer().lastname();
         emailService.sendOrderConfirmationEmail(
                 orderConfirmation.customer().email(),
                 customerName,

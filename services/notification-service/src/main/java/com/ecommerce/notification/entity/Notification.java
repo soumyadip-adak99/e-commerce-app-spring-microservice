@@ -1,8 +1,8 @@
 package com.ecommerce.notification.entity;
 
 import com.ecommerce.common.events.OrderConfirmationEvent;
+import com.ecommerce.common.events.PaymentNotificationRequestEvent;
 import com.ecommerce.notification.enums.NotificationType;
-import com.ecommerce.notification.records.PaymentConfirmation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,5 +28,5 @@ public class Notification {
 
     private OrderConfirmationEvent orderConfirmation;
 
-    private PaymentConfirmation paymentConfirmation;
+    private PaymentNotificationRequestEvent paymentConfirmation;
 }

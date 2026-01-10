@@ -5,9 +5,10 @@
 [![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2025.1.0-6DB33F?style=for-the-badge&logo=spring&logoColor=white)](https://spring.io/projects/spring-cloud)
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 [![Apache Kafka](https://img.shields.io/badge/Apache%20Kafka-7.4.0-231F20?style=for-the-badge&logo=apache-kafka&logoColor=white)](https://kafka.apache.org/)
+[![Keycloak](https://img.shields.io/badge/Keycloak-24.0.2-blue?style=for-the-badge&logo=keycloak&logoColor=white)](https://www.keycloak.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-A **production-grade e-commerce backend** built with **Spring Boot 4 & Spring Cloud**, implementing enterprise-level **microservices architecture** with event-driven communication, centralized configuration, and comprehensive observability.
+A **production-grade e-commerce backend** built with **Spring Boot 4 & Spring Cloud**, implementing enterprise-level **microservices architecture** with event-driven communication, centralized configuration, OAuth2/JWT security, and comprehensive observability.
 
 ---
 
@@ -16,6 +17,7 @@ A **production-grade e-commerce backend** built with **Spring Boot 4 & Spring Cl
 - [Overview](#-overview)
 - [Architecture](#-architecture)
 - [Microservices](#-microservices)
+- [Security](#-security)
 - [Tech Stack](#-tech-stack)
 - [Getting Started](#-getting-started)
 - [API Endpoints](#-api-endpoints)
@@ -35,10 +37,12 @@ This project demonstrates a **real-world microservices architecture** for an e-c
 
 - **8 Independent Microservices** — Customer, Product, Order, Payment, Notification, API Gateway, Discovery Server & Config Server
 - **Event-Driven Architecture** — Asynchronous communication via Apache Kafka
+- **OAuth2/JWT Security** — Keycloak integration with JWT token validation
 - **Service Discovery** — Dynamic registration with Netflix Eureka
 - **Centralized Configuration** — Spring Cloud Config Server with Git-based configs
 - **Database per Service** — PostgreSQL & MongoDB for different use cases
-- **API Gateway Pattern** — Single entry point with intelligent routing
+- **API Gateway Pattern** — Single entry point with intelligent routing and security
+- **Distributed Tracing** — Zipkin for request tracing across services
 
 ---
 
@@ -47,57 +51,63 @@ This project demonstrates a **real-world microservices architecture** for an e-c
 ### High-Level System Design
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                              CLIENT APPLICATIONS                             │
-│                        (Web, Mobile, Third-Party APIs)                       │
-└──────────────────────────────────┬──────────────────────────────────────────┘
-                                   │
-                                   ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                           ╔═══════════════════╗                             │
-│                           ║   API GATEWAY     ║  ◄─── Port: 8222            │
-│                           ║ (Spring Cloud GW) ║                             │
-│                           ╚═════════╦═════════╝                             │
-│                                     │                                       │
-│  ┌──────────────────────────────────┼──────────────────────────────────┐    │
-│  │           PRIVATE MICROSERVICES NETWORK (Eureka Discovery)          │    │
-│  │                                  │                                  │    │
-│  │    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐           │    │
-│  │    │  Customer   │    │   Product   │    │    Order    │           │    │
-│  │    │   Service   │◄──►│   Service   │◄──►│   Service   │           │    │
-│  │    │ (Port 8090) │    │ (Port 8050) │    │ (Port 8070) │           │    │
-│  │    └──────┬──────┘    └──────┬──────┘    └──────┬──────┘           │    │
-│  │           │                  │                  │                   │    │
-│  │           ▼                  ▼                  ▼                   │    │
-│  │    ┌──────────────┐   ┌───────────────┐   ┌────────────────┐       │    │
-│  │    │   MongoDB    │   │  PostgreSQL   │   │   PostgreSQL   │       │    │
-│  │    │  (Customers) │   │   (Products)  │   │    (Orders)    │       │    │
-│  │    └──────────────┘   └───────────────┘   └────────────────┘       │    │
-│  │                                                                     │    │
-│  │    ┌─────────────┐    ┌────────────────────────────────────────┐   │    │
-│  │    │   Payment   │    │           APACHE KAFKA                 │   │    │
-│  │    │   Service   │───►│  ┌─────────────┐  ┌─────────────────┐  │   │    │
-│  │    │ (Port 8060) │    │  │Order Events │  │ Payment Events  │  │   │    │
-│  │    └──────┬──────┘    │  └──────┬──────┘  └────────┬────────┘  │   │    │
-│  │           │           │         │                  │           │   │    │
-│  │           ▼           │         ▼                  ▼           │   │    │
-│  │    ┌──────────────┐   │  ┌────────────────────────────────┐    │   │    │
-│  │    │  PostgreSQL  │   │  │     Notification Service       │    │   │    │
-│  │    │  (Payments)  │   │  │        (Port 8040)             │    │   │    │
-│  │    └──────────────┘   │  │   📧 Email via Thymeleaf       │    │   │    │
-│  │                       │  └────────────────────────────────┘    │   │    │
-│  │                       └────────────────────────────────────────┘   │    │
-│  └─────────────────────────────────────────────────────────────────────┘    │
-│                                                                             │
-│  ┌─────────────────────────────────────────────────────────────────────┐    │
-│  │                    INFRASTRUCTURE SERVICES                           │    │
-│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────┐  │    │
-│  │  │  Config Server  │  │ Discovery Server│  │      Zipkin         │  │    │
-│  │  │   (Port 8888)   │  │  (Port 8761)    │  │  (Distributed Trace)│  │    │
-│  │  │  Git-based Cfg  │  │  Eureka Server  │  │                     │  │    │
-│  │  └─────────────────┘  └─────────────────┘  └─────────────────────┘  │    │
-│  └─────────────────────────────────────────────────────────────────────┘    │
-└─────────────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                              CLIENT APPLICATIONS                              │
+│                        (Web, Mobile, Third-Party APIs)                        │
+└───────────────────────────────────┬──────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                      ╔═══════════════════════════════╗                        │
+│                      ║      KEYCLOAK (IAM)           ║  ◄─── Port: 9090       │
+│                      ║   OAuth2 / JWT Provider       ║                        │
+│                      ╚═══════════════════════════════╝                        │
+│                                    │                                          │
+│                            ╔═══════════════════╗                              │
+│                            ║   API GATEWAY     ║  ◄─── Port: 8222             │
+│                            ║ (Spring Cloud GW) ║                              │
+│                            ║  JWT Validation   ║                              │
+│                            ╚═════════╦═════════╝                              │
+│                                      │                                        │
+│  ┌───────────────────────────────────┼───────────────────────────────────┐    │
+│  │           PRIVATE MICROSERVICES NETWORK (Eureka Discovery)            │    │
+│  │                                   │                                   │    │
+│  │    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐              │    │
+│  │    │  Customer   │    │   Product   │    │    Order    │              │    │
+│  │    │   Service   │◄──►│   Service   │◄──►│   Service   │              │    │
+│  │    │ (Port 8090) │    │ (Port 8050) │    │ (Port 8070) │              │    │
+│  │    └──────┬──────┘    └──────┬──────┘    └──────┬──────┘              │    │
+│  │           │                  │                  │                     │    │
+│  │           ▼                  ▼                  ▼                     │    │
+│  │    ┌──────────────┐   ┌───────────────┐   ┌────────────────┐          │    │
+│  │    │   MongoDB    │   │  PostgreSQL   │   │   PostgreSQL   │          │    │
+│  │    │  (Customers) │   │   (Products)  │   │    (Orders)    │          │    │
+│  │    └──────────────┘   └───────────────┘   └────────────────┘          │    │
+│  │                                                                       │    │
+│  │    ┌─────────────┐    ┌─────────────────────────────────────────┐     │    │
+│  │    │   Payment   │    │           APACHE KAFKA                  │     │    │
+│  │    │   Service   │───►│  ┌─────────────┐  ┌─────────────────┐   │     │    │
+│  │    │ (Port 8060) │    │  │Order Events │  │ Payment Events  │   │     │    │
+│  │    └──────┬──────┘    │  └──────┬──────┘  └────────┬────────┘   │     │    │
+│  │           │           │         │                  │            │     │    │
+│  │           ▼           │         ▼                  ▼            │     │    │
+│  │    ┌──────────────┐   │  ┌─────────────────────────────────┐    │     │    │
+│  │    │  PostgreSQL  │   │  │     Notification Service        │    │     │    │
+│  │    │  (Payments)  │   │  │        (Port 8040)              │    │     │    │
+│  │    └──────────────┘   │  │   📧 Email via Thymeleaf        │    │     │    │
+│  │                       │  └─────────────────────────────────┘    │     │    │
+│  │                       └─────────────────────────────────────────┘     │    │
+│  └───────────────────────────────────────────────────────────────────────┘    │
+│                                                                               │
+│  ┌───────────────────────────────────────────────────────────────────────┐    │
+│  │                    INFRASTRUCTURE SERVICES                            │    │
+│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────┐    │    │
+│  │  │  Config Server  │  │ Discovery Server│  │      Zipkin         │    │    │
+│  │  │   (Port 8888)   │  │  (Port 8761)    │  │   (Port 9411)       │    │    │
+│  │  │  Git-based Cfg  │  │  Eureka Server  │  │ Distributed Tracing │    │    │
+│  │  └─────────────────┘  └─────────────────┘  └─────────────────────┘    │    │
+│  └───────────────────────────────────────────────────────────────────────┘    │
+└──────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Architecture Diagram
@@ -126,9 +136,11 @@ This project demonstrates a **real-world microservices architecture** for an e-c
 
 | Service | Port | Description |
 |---------|------|-------------|
-| **API Gateway** | 8222 | Spring Cloud Gateway MVC with load balancing |
+| **API Gateway** | 8222 | Spring Cloud Gateway MVC with OAuth2 JWT validation |
 | **Discovery Server** | 8761 | Netflix Eureka for service registration |
 | **Config Server** | 8888 | Centralized configuration with Git backend |
+| **Keycloak** | 9090 | Identity & Access Management (OAuth2/OIDC) |
+| **Zipkin** | 9411 | Distributed tracing dashboard |
 
 ---
 
@@ -164,15 +176,79 @@ This project demonstrates a **real-world microservices architecture** for an e-c
 
 ---
 
+## 🔐 Security
+
+### OAuth2 / JWT Authentication
+
+The platform implements **OAuth2 Resource Server** pattern with **Keycloak** as the Identity Provider:
+
+```
+┌──────────────┐     1. Login      ┌──────────────┐
+│    Client    │ ─────────────────►│   Keycloak   │
+│  (Frontend)  │◄───────────────── │  (Port 9090) │
+└──────────────┘   2. JWT Token    └──────────────┘
+       │
+       │ 3. API Request + Bearer Token
+       ▼
+┌──────────────────────────────────────────────────┐
+│              API Gateway (Port 8222)             │
+│  ┌────────────────────────────────────────────┐  │
+│  │     OAuth2 Resource Server (JWT Validation) │  │
+│  │     - Validates JWT signature               │  │
+│  │     - Checks token expiration               │  │
+│  │     - Extracts user claims                  │  │
+│  └────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────┘
+       │
+       │ 4. Authenticated Request
+       ▼
+┌──────────────────────────────────────────────────┐
+│              Backend Microservices               │
+└──────────────────────────────────────────────────┘
+```
+
+### Security Configuration
+
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/eureka/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(Customizer.withDefaults())
+            );
+        return http.build();
+    }
+}
+```
+
+### Keycloak Setup
+
+1. Access Keycloak Admin Console at `http://localhost:9090`
+2. Login with `admin` / `admin`
+3. Create a new realm for your application
+4. Create clients and configure OIDC settings
+5. Add users and assign roles
+
+---
+
 ## ⚡ Event-Driven Communication
 
 ```
 ┌──────────────┐     Order Confirmation      ┌────────────────────┐
-│ Order Service │ ─────────────────────────► │                    │
+│ Order Service│ ─────────────────────────►  │                    │
 └──────────────┘                             │   Apache Kafka     │
                                              │                    │
 ┌────────────────┐   Payment Confirmation    │  ┌──────────────┐  │
-│ Payment Service │ ───────────────────────► │  │  Topics:     │  │
+│ Payment Service│ ───────────────────────►  │  │  Topics:     │  │
 └────────────────┘                           │  │  - orders    │  │
                                              │  │  - payments  │  │
                                              │  └──────┬───────┘  │
@@ -181,9 +257,9 @@ This project demonstrates a **real-world microservices architecture** for an e-c
                                                        │
                                                        ▼
                                              ┌─────────────────────┐
-                                             │ Notification Service │
-                                             │   (Event Consumer)   │
-                                             │   📧 Send Emails      │
+                                             │ Notification Service│
+                                             │   (Event Consumer)  │
+                                             │   📧 Send Emails    │
                                              └─────────────────────┘
 ```
 
@@ -213,6 +289,13 @@ This project demonstrates a **real-world microservices architecture** for an e-c
 | Netflix Eureka | Service Discovery |
 | Spring Cloud OpenFeign | Declarative REST Clients |
 | Spring Cloud LoadBalancer | Client-side Load Balancing |
+
+### Security
+| Technology | Usage |
+|------------|-------|
+| Spring Security | Security Framework |
+| OAuth2 Resource Server | JWT Token Validation |
+| Keycloak 24.0.2 | Identity & Access Management |
 
 ### Data Layer
 | Technology | Usage |
@@ -298,16 +381,19 @@ This project demonstrates a **real-world microservices architecture** for an e-c
 | API Gateway | http://localhost:8222 |
 | Eureka Dashboard | http://localhost:8761 |
 | Config Server | http://localhost:8888 |
+| Keycloak Admin | http://localhost:9090 |
+| Zipkin Dashboard | http://localhost:9411 |
 | pgAdmin | http://localhost:5050 |
 | Mongo Express | http://localhost:8081 |
 | MailDev (SMTP UI) | http://localhost:1080 |
-| Zipkin (if enabled) | http://localhost:9411 |
 
 ---
 
 ## 📡 API Endpoints
 
 All APIs are accessible through the **API Gateway** at `http://localhost:8222`
+
+> **Note:** All endpoints (except `/eureka/**`) require a valid JWT token in the `Authorization` header.
 
 ### Customer Service
 | Method | Endpoint | Description |
@@ -346,7 +432,7 @@ All APIs are accessible through the **API Gateway** at `http://localhost:8222`
 ```
 e-commerce-app-spring-microservice/
 ├── 📁 services/
-│   ├── 📁 api-gateway-service/     # Spring Cloud Gateway MVC
+│   ├── 📁 api-gateway-service/     # Spring Cloud Gateway MVC + OAuth2
 │   ├── 📁 config-server/           # Spring Cloud Config Server
 │   ├── 📁 discovery-server/        # Netflix Eureka Server
 │   ├── 📁 customer-service/        # Customer Management (MongoDB)
@@ -354,7 +440,7 @@ e-commerce-app-spring-microservice/
 │   ├── 📁 order-service/           # Order Processing (PostgreSQL)
 │   ├── 📁 payment-service/         # Payment Handling (PostgreSQL)
 │   └── 📁 notification-service/    # Event-Driven Notifications
-├── 📁 resource/                    # Shared resources & configs
+├── 📁 resource/                    # Shared library (common events & DTOs)
 ├── 📁 diagram/                     # Architecture diagrams
 ├── 📄 docker-compose.yml           # Infrastructure setup
 ├── 📄 LICENSE                      # MIT License
@@ -375,6 +461,8 @@ The `docker-compose.yml` provisions the following infrastructure:
 | `ms_mongo_express` | mongo-express | 8081 | MongoDB Admin UI |
 | `zookeeper` | confluentinc/cp-zookeeper | 22181 | Kafka Coordination |
 | `ms_kafka` | confluentinc/cp-kafka:7.4.0 | 9092 | Message Broker |
+| `zipkin` | openzipkin/zipkin | 9411 | Distributed Tracing |
+| `keycloak-ms` | quay.io/keycloak/keycloak:24.0.2 | 9090 | Identity Provider |
 | `ms_mail_dev` | maildev/maildev | 1080, 1025 | Email Testing Server |
 
 ---
@@ -385,18 +473,20 @@ This project adheres to industry best practices:
 
 - ✅ **Single Responsibility Principle** — Each service handles one domain
 - ✅ **Database per Service** — Independent data stores for loose coupling
-- ✅ **API Gateway Pattern** — Unified entry point for clients
+- ✅ **API Gateway Pattern** — Unified entry point with security
 - ✅ **Event-Driven Design** — Asynchronous communication via Kafka
 - ✅ **12-Factor App** — Cloud-native application methodology
 - ✅ **Externalized Configuration** — Config Server with Git backend
 - ✅ **Service Discovery** — Dynamic registration with Eureka
 - ✅ **Health Checks** — Spring Boot Actuator endpoints
+- ✅ **Zero Trust Security** — JWT validation at Gateway level
 
 ---
 
 ## 🔮 Future Roadmap
 
-- [ ] **Security** — OAuth2 / JWT Authentication
+- [x] **Security** — OAuth2 / JWT Authentication with Keycloak ✅
+- [x] **Distributed Tracing** — Zipkin integration ✅
 - [ ] **Resilience** — Circuit Breaker with Resilience4j
 - [ ] **Rate Limiting** — API throttling at Gateway level
 - [ ] **Kubernetes** — Container orchestration deployment

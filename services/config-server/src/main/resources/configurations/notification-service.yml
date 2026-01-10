@@ -1,22 +1,21 @@
 spring:
   application:
     name: NOTIFICATION-SERVICE
-  mongodb:
-    username: soumya
-    password: tiger
-    host: localhost
-    port: 27017
-    database: notification
-    authentication-database: admin
+  data:
+    mongodb:
+      uri: mongodb://soumya:tiger@localhost:27017/notification?authSource=admin
 
   kafka:
     consumer:
       bootstrap-servers: localhost:9092
       group-id: paymentGroup
       auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
       properties:
+        # Configure the actual deserializers
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
         # use * for local development or unsecure networks
         spring.json.trusted.packages: "*"
         spring.json.type.mapping: |
